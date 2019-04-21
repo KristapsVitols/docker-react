@@ -1,0 +1,17 @@
+# Base image ( alpine is like minimum node image )
+FROM node:alpine
+
+# Working directory within container
+WORKDIR '/app'
+
+# First, copy package.json only and then install all dependencies
+# If we copy everything at once, if something changes within project, it will be running npm install etc again...
+# So we want to run it only if there are any changes in package.json file
+COPY package.json .
+RUN npm install
+
+# Copy everything else to the container
+COPY . .
+
+# Run npm start when container is up
+CMD ["npm", "run", "start"]
